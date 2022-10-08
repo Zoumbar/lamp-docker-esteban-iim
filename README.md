@@ -17,7 +17,7 @@ Dans chacun de ces dossier, je créé un fichier dockerfile ou on va déclarer l
 
 Création d'un dossier config à la racine du projet ou on va créér un fichier de configuration pour le serveur
 httpd-vhosts.conf
-On va y retrouver la configuration du VirtualHost ainsi que les règles à respecter
+On y retrouve les options pour indiquer la racine du projet, la page d'accueil ou encore la page pour les erreurs 404
 
 ## Quatrième partie : Db et php
 
