@@ -1,0 +1,57 @@
+version: '3'
+services:
+  apache:
+    depends_on:
+      - mysql
+    container_name: iim_lamp_apache
+    hostname: iim_lamp_apache
+    build: ./containers/apache
+    ports:
+      - '80:80'
+      - '443:443'
+    networks:
+      - iim_lamp
+    volumes:
+      - './src/:/usr/local/apache2/htdocs'
+      - './config/:/usr/local/apache2/conf/extra' #lien entre le fichier vhosts.conf et apache
+  php:
+    depends_on:
+      - mysql
+    container_name: iim_lamp_php
+    hostname: iim_lamp_php
+    build: ./containers/php
+    volumes:
+      - './src/:/var/www/html'
+    networks:
+      - iim_lamp
+  mysql: 
+    container_name: iim_lamp_mysql
+    hostname: iim_lamp_mysql
+    build: './containers/mysql'
+    ports: 
+      - '3306:3306'
+    environment:
+      - MYSQL_DATABASE=iim_lamp_db
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ALLOWEMPTY_PASSWORD=1
+    networks:
+      - iim_lamp
+    volumes:
+      - './db:/docker-entrypoint-initdb.d'
+  phpmyadmin:
+    depends_on:
+      - mysql
+    container_name: iim_lamp_phpmyadmin
+    hostname: iim_lamp_phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8001:80'
+    environment:
+      - PMA_HOST=iim_lamp_mysql
+      - PMA_PORT=3306
+    networks:
+      - iim_lamp
+networks:
+  iim_lamp: 
+    driver: bridge
+  
